@@ -170,8 +170,68 @@ Here's a comprehensive list organized by area. Each bullet is phrased as somethi
 - 15.10 Estimating effort and communicating risk to stakeholders
 
 ## Suggested Rubric Approach
-- **Score each bullet 0-3:** 0 = can't explain, 1 = recognize the term, 2 = can explain and apply, 3 = can teach it or has debugged a real issue involving it.
 - **Weight sections by your domain.** A power-electronics engineer should weight sections 2, 6, and 7 heavily, while an IoT engineer might weight 4, 12, and 14.
 - **Pair each bullet with a "war story" prompt:** "Describe a time this went wrong in a design." Practical experience is a stronger signal than textbook recall.
 
-If it would help, I can turn any section into concrete quiz questions with answer keys, or produce this as a spreadsheet with scoring columns.
+# Scoring Approach
+
+Score each quiz item on **answer quality**, separate from experience. Judge the answer against a pre-written answer key with 3-5 key points per item.
+
+## Per-Item Score (0-4)
+
+| Score | Label | Criteria |
+|---|---|---|
+| **0** | Wrong / blank | Incorrect, or can't answer. Also use 0 for a *confidently wrong* answer, and flag it (see below). |
+| **1** | Minimal | Recognizes the term or gets one key point, but the explanation is mostly wrong or too vague to apply. |
+| **2** | Partial | Gets the core idea, but misses key points or has a meaningful error. Wouldn't be safe to apply without checking. |
+| **3** | Mostly right | Hits nearly all key points. Only minor omissions or imprecision (e.g., forgets a derating factor, fuzzy on a number but right on the concept). Would produce a working design. |
+| **4** | Perfect | Complete and accurate, states the assumptions and edge cases, and gives correct numbers or rules of thumb where relevant. |
+
+**Quick rule of thumb for graders:**
+- Would a design based on this answer **fail or be unsafe**? → 0 or 1
+- Would it **work but be suboptimal or miss an edge case**? → 2 or 3
+- Would it **work and hold up in review**? → 4
+
+## Flags (tracked separately, not part of the score)
+
+- **Confidently wrong (CW):** The person stated an incorrect answer with high certainty. This is riskier than "I don't know," so track the count per section.
+- **Experience (E):** They gave a real war story where they hit this issue. It doesn't change the score, but it shows depth.
+- **Needs refresh (R):** They knew it once but it's rusty. Useful for prioritizing study.
+
+## Optional Confidence Calibration
+
+Have the person rate their confidence (Low / Med / High) before seeing the result. Compare it to the score:
+
+| | Score 0-1 | Score 2 | Score 3-4 |
+|---|---|---|---|
+| **High confidence** | Danger zone (CW) | Overconfident | Solid |
+| **Low confidence** | Known gap | Calibrated | Underconfident, build trust |
+
+## Section-Level Results
+
+Average the item scores per section and convert to a percentage (average ÷ 4):
+
+| Section Score | Interpretation |
+|---|---|
+| **85-100%** | Strong. Maintain with periodic review. |
+| **70-84%** | Solid for mid-level. Fill specific gaps. |
+| **50-69%** | Developing. Prioritize study on missed items. |
+| **Below 50%** | Gap area. Needs focused learning or mentorship. |
+
+**Mid-level target:** about 70%+ in your core sections, 50%+ in adjacent ones, with **zero or near-zero CW flags** in safety-critical areas (power, protection, high-voltage clearance, compliance).
+
+## Spreadsheet Layout
+
+| Section | Question | Score (0-4) | Confidence (L/M/H) | Flags (CW/E/R) | Notes / Missed Points |
+|---|---|---|---|---|---|
+
+Add a summary tab with per-section averages, CW counts, and a list of every item scored 0-2 as your study queue.
+
+## Sample Scored Answer
+
+**Question:** *Why does an MLCC's capacitance drop on a 5V rail?*
+- **0:** "Because it heats up." (Wrong)
+- **1:** "Ceramic caps change with voltage somehow." (Recognizes it, no mechanism)
+- **2:** "DC bias reduces capacitance, especially in small packages." (Core idea, no numbers or dielectric context)
+- **3:** "DC bias derating on X5R/X7R, can lose 50%+ at rated voltage, bigger case or higher voltage rating helps." (Nearly complete)
+- **4:** All of the above, plus: Class II dielectric polarization mechanism, check the manufacturer's DC bias curve rather than the nominal value, C0G/NP0 has no such effect, and it matters for regulator stability and ripple calculations.
